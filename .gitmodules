@@ -1,0 +1,3 @@
+[submodule "blend-ui"]
+	path = blend-ui
+	url = https://github.com/karagozemin/blend-ui
