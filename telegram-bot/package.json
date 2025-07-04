@@ -1,0 +1,22 @@
+{
+  "name": "blend-sentinel-telegram-bot",
+  "version": "1.0.0",
+  "description": "Telegram bot for Blend Sentinel risk monitoring",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "node-telegram-bot-api": "^0.64.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "keywords": ["telegram", "bot", "stellar", "blend", "defi", "risk"],
+  "author": "Blend Sentinel Team",
+  "license": "MIT"
+} 
