@@ -10,22 +10,272 @@ const port = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  res.send(`
+    <h2>🚀 Blend Sentinel Bot Aktif!</h2>
+    <p>Bu bot, Blend protokolü üzerindeki riskleri takip eder ve Telegram ile uyarı gönderir.</p>
+    <ul>
+      <li><a href="/health">API Durumu</a></li>
+      <li><a href="https://t.me/blend_sentinel_bot">Telegram Botunu Aç</a></li>
+      <li><a href="https://github.com/your-repo-url">GitHub Projesi</a></li>
+    </ul>
+  `);
+});
+
+
+
+
+
 // Telegram Bot Setup
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || 'DEMO_TOKEN';
-const bot = BOT_TOKEN !== 'DEMO_TOKEN' ? new TelegramBot(BOT_TOKEN, { polling: false }) : null;
+let bot = null;
+
+// Only initialize bot if we have a valid token
+if (BOT_TOKEN !== 'DEMO_TOKEN') {
+  try {
+    bot = new TelegramBot(BOT_TOKEN, { polling: true });
+    
+    // Handle polling errors gracefully
+    bot.on('polling_error', (error) => {
+      console.log('⚠️ Telegram polling error:', error.message);
+      console.log('🔧 Check your TELEGRAM_BOT_TOKEN in .env file');
+    });
+    
+  } catch (error) {
+    console.log('❌ Failed to initialize Telegram bot:', error.message);
+    bot = null;
+  }
+}
 
 // In-memory storage for demo purposes (use database in production)
 const userSubscriptions = new Map();
 const notifications = [];
+const authSessions = new Map(); // Store pending auth sessions
+
+// Demo mode chat simulation
+const simulateDemoAuth = (authToken) => {
+  console.log(`🎭 [DEMO MODE] Simulating Telegram auth for token: ${authToken}`);
+  
+  setTimeout(() => {
+    const authSession = authSessions.get(authToken);
+    
+    if (authSession && !authSession.completed) {
+      // Simulate successful auth
+      const demoChat = `demo_chat_${Date.now()}`;
+      
+      authSession.chatId = demoChat;
+      authSession.completed = true;
+      authSession.completedAt = new Date().toISOString();
+      
+      // Create mock user info for demo
+      const mockUserInfo = {
+        id: 123456789,
+        first_name: 'Demo',
+        last_name: 'User',
+        username: 'demo_user',
+        language_code: 'en'
+      };
+      
+      // Subscribe user automatically with mock user info
+      userSubscriptions.set(authSession.walletAddress, {
+        chatId: demoChat,
+        riskThreshold: 80,
+        createdAt: new Date().toISOString(),
+        lastNotification: null,
+        isActive: true,
+        userInfo: mockUserInfo
+      });
+      
+      console.log(`✅ [DEMO MODE] Auth completed: ${authSession.walletAddress} -> ${mockUserInfo.first_name} (@${mockUserInfo.username}) - Chat ID: ${demoChat}`);
+      console.log(`🎉 [DEMO MODE] User would see: "Welcome to Blend Sentinel, Demo! Wallet connected successfully!"`);
+    }
+  }, 3000); // Simulate 3 second delay
+};
+
+// Telegram Bot Commands (only if bot is available)
+if (bot) {
+  // Handle /start command
+  bot.onText(/\/start(.*)/, async (msg, match) => {
+    const chatId = msg.chat.id;
+    const authToken = match[1]?.trim();
+    
+    if (authToken) {
+      // User clicked auth link from frontend
+      const authSession = authSessions.get(authToken);
+      
+      if (authSession && !authSession.completed) {
+        // Complete the auth
+        authSession.chatId = chatId;
+        authSession.completed = true;
+        authSession.completedAt = new Date().toISOString();
+        
+        // Store user info from Telegram
+        const userInfo = {
+          id: msg.from.id,
+          first_name: msg.from.first_name,
+          last_name: msg.from.last_name || '',
+          username: msg.from.username || '',
+          language_code: msg.from.language_code || 'en'
+        };
+        
+        // Subscribe user automatically with user info
+        userSubscriptions.set(authSession.walletAddress, {
+          chatId,
+          riskThreshold: 80,
+          createdAt: new Date().toISOString(),
+          lastNotification: null,
+          isActive: true,
+          userInfo: userInfo
+        });
+        
+        console.log(`✅ Auth completed: ${authSession.walletAddress} -> ${userInfo.first_name} (@${userInfo.username || 'no_username'}) - Chat ID: ${chatId}`);
+        
+        // Create display name for user
+        const displayName = userInfo.username ? `@${userInfo.username}` : userInfo.first_name;
+        
+        await bot.sendMessage(chatId, 
+          `🎉 *Welcome to Blend Sentinel, ${userInfo.first_name}!*\n\n` +
+          `✅ Your wallet has been successfully connected!\n` +
+          `📬 You'll receive risk alerts when your positions need attention.\n\n` +
+          `🔗 *Wallet:* \`${authSession.walletAddress.slice(0, 8)}...${authSession.walletAddress.slice(-8)}\`\n\n` +
+          `🚨 *Alert Threshold:* Risk Score ≥ 80\n\n` +
+          `You can now close this chat and return to the Blend Sentinel app.`,
+          { parse_mode: 'Markdown' }
+        );
+        
+      } else {
+        await bot.sendMessage(chatId, 
+          `❌ *Invalid or expired auth link*\n\n` +
+          `Please generate a new connection link from the Blend Sentinel app.`,
+          { parse_mode: 'Markdown' }
+        );
+      }
+    } else {
+      // Regular start command
+      await bot.sendMessage(chatId, 
+        `🤖 *Welcome to Blend Sentinel Bot!*\n\n` +
+        `This bot monitors your DeFi positions on Blend Protocol and sends you risk alerts.\n\n` +
+        `🔗 To connect your wallet, please visit:\n` +
+        `${process.env.FRONTEND_URL || 'http://localhost:3000'}/sentinel\n\n` +
+        `Click "Connect to Telegram" and follow the instructions.`,
+        { parse_mode: 'Markdown' }
+      );
+    }
+  });
+  
+  // Handle other messages
+  bot.on('message', async (msg) => {
+    const chatId = msg.chat.id;
+    
+    // Skip if it's a command
+    if (msg.text && msg.text.startsWith('/')) return;
+    
+    await bot.sendMessage(chatId, 
+      `🤖 *Blend Sentinel Bot*\n\n` +
+      `I only respond to wallet connection requests.\n\n` +
+      `🔗 To connect your wallet, visit:\n` +
+      `${process.env.FRONTEND_URL || 'http://localhost:3000'}/sentinel`,
+      { parse_mode: 'Markdown' }
+    );
+  });
+  
+  console.log('🤖 Telegram bot commands initialized');
+}
 
 // API Routes
 
+// Start auth session
+app.post('/api/auth/start', (req, res) => {
+  const { walletAddress } = req.body;
+  
+  if (!walletAddress) {
+    return res.status(400).json({ 
+      error: 'walletAddress is required' 
+    });
+  }
+
+  // Generate unique auth token
+  const authToken = `auth_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  
+  // Create auth session
+  authSessions.set(authToken, {
+    walletAddress,
+    createdAt: new Date().toISOString(),
+    completed: false,
+    chatId: null
+  });
+  
+  // Clean up session after 10 minutes
+  setTimeout(() => {
+    if (authSessions.has(authToken)) {
+      authSessions.delete(authToken);
+    }
+  }, 10 * 60 * 1000);
+  
+  console.log(`🔑 Auth session started for ${walletAddress}: ${authToken}`);
+  
+  // If no real bot available, start demo simulation
+  const isRealBot = BOT_TOKEN !== 'DEMO_TOKEN' && bot !== null;
+  if (!isRealBot) {
+    console.log(`🎭 [DEMO MODE] Starting demo auth simulation...`);
+    simulateDemoAuth(authToken);
+  }
+  
+  const botUsername = process.env.TELEGRAM_BOT_USERNAME || 'blend_sentinel_bot';
+  const telegramUrl = `https://t.me/${botUsername}?start=${authToken}`;
+  
+  res.json({ 
+    success: true, 
+    authToken,
+    telegramUrl,
+    expiresIn: 600, // 10 minutes
+    demoMode: !isRealBot
+  });
+});
+
+// Check auth status
+app.get('/api/auth/status/:authToken', (req, res) => {
+  const { authToken } = req.params;
+  
+  const authSession = authSessions.get(authToken);
+  
+  if (!authSession) {
+    return res.status(404).json({ 
+      error: 'Auth session not found or expired' 
+    });
+  }
+  
+  let displayName = null;
+  if (authSession.completed) {
+    // Get user info from subscription
+    const subscription = userSubscriptions.get(authSession.walletAddress);
+    if (subscription && subscription.userInfo) {
+      const userInfo = subscription.userInfo;
+      displayName = userInfo.username ? `@${userInfo.username}` : userInfo.first_name || 'Telegram User';
+    }
+  }
+  
+  res.json({ 
+    success: true, 
+    completed: authSession.completed,
+    walletAddress: authSession.walletAddress,
+    chatId: authSession.chatId,
+    createdAt: authSession.createdAt,
+    completedAt: authSession.completedAt || null,
+    displayName: displayName
+  });
+});
+
 // Health check
 app.get('/health', (req, res) => {
+  const isRealBot = BOT_TOKEN !== 'DEMO_TOKEN' && bot !== null;
+  
   res.json({ 
     status: 'ok', 
     service: 'Blend Sentinel Telegram Bot',
-    botConnected: !!bot,
+    botConnected: isRealBot,
+    demoMode: !isRealBot,
+    botToken: BOT_TOKEN === 'DEMO_TOKEN' ? 'DEMO_TOKEN' : 'SET',
     timestamp: new Date().toISOString()
   });
 });
@@ -185,11 +435,16 @@ app.get('/api/subscription/:walletAddress', (req, res) => {
     });
   }
   
+  // Create display name for frontend
+  const userInfo = subscription.userInfo || {};
+  const displayName = userInfo.username ? `@${userInfo.username}` : userInfo.first_name || 'Telegram User';
+  
   res.json({ 
     success: true, 
     subscription: {
       ...subscription,
-      walletAddress
+      walletAddress,
+      displayName: displayName
     }
   });
 });
@@ -236,6 +491,62 @@ app.get('/api/admin/stats', (req, res) => {
     recentNotifications: notifications
       .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
       .slice(0, 10)
+  });
+});
+
+// Telegram Login Widget endpoint
+app.post('/api/telegram-login', (req, res) => {
+  const { walletAddress, telegramUser } = req.body;
+  
+  if (!walletAddress || !telegramUser) {
+    return res.status(400).json({ 
+      error: 'walletAddress and telegramUser are required' 
+    });
+  }
+
+  // Verify required Telegram user fields
+  if (!telegramUser.id || !telegramUser.first_name) {
+    return res.status(400).json({ 
+      error: 'Invalid Telegram user data' 
+    });
+  }
+
+  // Create user info object
+  const userInfo = {
+    id: telegramUser.id,
+    first_name: telegramUser.first_name,
+    last_name: telegramUser.last_name || '',
+    username: telegramUser.username || '',
+    photo_url: telegramUser.photo_url || '',
+    auth_date: telegramUser.auth_date,
+    hash: telegramUser.hash
+  };
+  
+  // Create display name
+  const displayName = userInfo.username ? `@${userInfo.username}` : userInfo.first_name;
+
+  // Create subscription
+  userSubscriptions.set(walletAddress, {
+    chatId: telegramUser.id.toString(),
+    riskThreshold: 80,
+    createdAt: new Date().toISOString(),
+    lastNotification: null,
+    isActive: true,
+    userInfo: userInfo
+  });
+
+  console.log(`✅ Telegram Login: ${walletAddress} -> ${userInfo.first_name} (${displayName}) - User ID: ${telegramUser.id}`);
+  
+  res.json({ 
+    success: true, 
+    message: 'Successfully connected via Telegram Login',
+    displayName: displayName,
+    subscription: {
+      walletAddress,
+      chatId: telegramUser.id.toString(),
+      riskThreshold: 80,
+      userInfo: userInfo
+    }
   });
 });
 
