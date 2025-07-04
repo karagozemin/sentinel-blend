@@ -1,6 +1,6 @@
 # 🛡️ Blend Sentinel 
 
-**Stellar ağında DeFi güvenliğiniz için akıllı risk yönetimi sistemi**
+**Smart risk management system for DeFi security on the Stellar network**
 
 [![Demo](https://img.shields.io/badge/Demo-Live-brightgreen)](http://localhost:3000/sentinel)
 [![Telegram](https://img.shields.io/badge/Telegram-Bot-blue)](https://t.me/blend_sentinel_bot)
@@ -10,27 +10,27 @@
 
 ---
 
-## 📖 **İçindekiler**
+## 📖 **Table of Contents**
 
-- [🎯 Proje Hakkında](#-proje-hakkında)
-- [🚨 Problem & Çözüm](#-problem--çözüm)
-- [🚀 Özellikler](#-özellikler)
-- [🏗️ Sistem Mimarisi](#️-sistem-mimarisi)
-- [📊 Risk Analizi](#-risk-analizi)
-- [⚡ Hızlı Başlangıç](#-hızlı-başlangıç)
-- [🛠️ Kurulum](#️-kurulum)
-- [🤖 Telegram Bot Kurulumu](#-telegram-bot-kurulumu)
-- [📱 Kullanım](#-kullanım)
-- [🔌 API Referansı](#-api-referansı)
+- [🎯 About the Project](#-about-the-project)
+- [🚨 Problem & Solution](#-problem--solution)
+- [🚀 Features](#-features)
+- [🏗️ System Architecture](#️-system-architecture)
+- [📊 Risk Analysis](#-risk-analysis)
+- [⚡ Quick Start](#-quick-start)
+- [🛠️ Installation](#️-installation)
+- [🤖 Telegram Bot Setup](#-telegram-bot-setup)
+- [📱 Usage](#-usage)
+- [🔌 API Reference](#-api-reference)
 - [🌐 Production Deployment](#-production-deployment)
 - [🔮 Roadmap](#-roadmap)
 - [🤝 Contributing](#-contributing)
 
 ---
 
-## 🎯 **Proje Hakkında**
+## 🎯 **About the Project**
 
-**Blend Sentinel**, Stellar blockchain üzerindeki [Blend Protocol](https://blend.capital/) kullanıcıları için geliştirilmiş gerçek zamanlı risk izleme ve uyarı sistemidir. Kullanıcıların DeFi pozisyonlarını sürekli analiz ederek likidation risklerine karşı proaktif koruma sağlar.
+**Blend Sentinel** is a real-time risk monitoring and alert system developed for [Blend Protocol](https://blend.capital/) users on the Stellar blockchain. It provides proactive protection against liquidation risks by continuously analyzing users' DeFi positions.
 
 ### **🎪 Demo**
 - **Frontend**: http://localhost:3000/sentinel
@@ -39,49 +39,49 @@
 
 ---
 
-## 🚨 **Problem & Çözüm**
+## 🚨 **Problem & Solution**
 
-### **❌ Mevcut Problem**
-- Blend Protocol'de **pozisyon takibi** manuel olarak yapılmak zorunda
-- Kullanıcılar **likidation risklerini** zamanında fark edemiyor  
-- **Gerçek fon kaybı** riski (sudden liquidations)
-- **Proaktif uyarı sistemi** mevcut değil
+### **❌ Current Problem**
+- **Position tracking** in Blend Protocol must be done manually
+- Users cannot detect **liquidation risks** in time  
+- Risk of **actual fund loss** (sudden liquidations)
+- No **proactive alert system** available
 
-### **✅ Blend Sentinel Çözümü**
-- 🔄 **24/7 otomatik** pozisyon monitörü
-- 📱 **Telegram bildirimleri** ile anlık uyarılar
-- 📊 **Akıllı risk skorlama** algoritması
-- 🎯 **Likidation önleme** sistemi
-- 💡 **Pool optimizasyon** önerileri
+### **✅ Blend Sentinel Solution**
+- 🔄 **24/7 automatic** position monitoring
+- 📱 **Telegram notifications** with instant alerts
+- 📊 **Smart risk scoring** algorithm
+- 🎯 **Liquidation prevention** system
+- 💡 **Pool optimization** recommendations
 
 ---
 
-## 🚀 **Özellikler**
+## 🚀 **Features**
 
 ### **💎 Core Features**
-- ✅ **Real-time Position Tracking** - Tüm Blend pool'larında pozisyon analizi
-- ✅ **Smart Risk Scoring** - LTV ve Health Factor bazlı risk hesaplama
-- ✅ **Telegram Notifications** - Risk eşiği aşımında otomatik uyarı
-- ✅ **Multi-Wallet Support** - Freighter ve diğer Stellar wallet'lar
-- ✅ **Responsive Dashboard** - Mobil ve masaüstü uyumlu arayüz
+- ✅ **Real-time Position Tracking** - Position analysis in all Blend pools
+- ✅ **Smart Risk Scoring** - LTV and Health Factor based risk calculation
+- ✅ **Telegram Notifications** - Automatic alerts when risk threshold is exceeded
+- ✅ **Multi-Wallet Support** - Freighter and other Stellar wallets
+- ✅ **Responsive Dashboard** - Mobile and desktop compatible interface
 
 ### **🔧 Technical Features**
-- ✅ **Blend SDK Integration** - Resmi Blend SDK kullanımı
-- ✅ **TypeScript & Next.js** - Modern web teknolojileri
-- ✅ **RESTful API** - Telegram bot ve webhook desteği
-- ✅ **Real-time Updates** - Pozisyon verilerinin canlı güncellenmesi
-- ✅ **Error Handling** - Robust hata yönetimi
+- ✅ **Blend SDK Integration** - Official Blend SDK usage
+- ✅ **TypeScript & Next.js** - Modern web technologies
+- ✅ **RESTful API** - Telegram bot and webhook support
+- ✅ **Real-time Updates** - Live updates of position data
+- ✅ **Error Handling** - Robust error management
 
 ### **📈 Advanced Features**
-- ✅ **Health Factor Monitoring** - Likidation eşik takibi
-- ✅ **Portfolio Overview** - Toplam pozisyon analizi
-- ✅ **Risk Threshold Customization** - Kişiselleştirilebilir uyarılar
-- ✅ **Historical Data** - Notification geçmişi
-- ✅ **Admin Dashboard** - Sistem istatistikleri
+- ✅ **Health Factor Monitoring** - Liquidation threshold tracking
+- ✅ **Portfolio Overview** - Total position analysis
+- ✅ **Risk Threshold Customization** - Customizable alerts
+- ✅ **Historical Data** - Notification history
+- ✅ **Admin Dashboard** - System statistics
 
 ---
 
-## 🏗️ **Sistem Mimarisi**
+## 🏗️ **System Architecture**
 
 ```mermaid
 graph TB
@@ -118,7 +118,7 @@ graph TB
 
 ---
 
-## 📊 **Risk Analizi**
+## 📊 **Risk Analysis**
 
 ### **🧮 Risk Score Calculation**
 
@@ -154,7 +154,7 @@ function calculateRiskScore(position: PositionData): number {
 
 ---
 
-## ⚡ **Hızlı Başlangıç**
+## ⚡ **Quick Start**
 
 ### **🚀 1-Minute Demo Setup**
 
@@ -174,59 +174,59 @@ cd ../blend-ui && npm run dev &
 open http://localhost:3000/sentinel
 ```
 
-🎯 **Demo Mode**: Sistem Telegram token olmadan da çalışır - bildirimleri konsola yazdırır.
+🎯 **Demo Mode**: System works without Telegram token - prints notifications to console.
 
 ---
 
-## 🛠️ **Kurulum**
+## 🛠️ **Installation**
 
-### **📋 Gereksinimler**
+### **📋 Requirements**
 
 - **Node.js** 18+ 
-- **npm** veya **yarn**
+- **npm** or **yarn**
 - **Git**
 - **Freighter Wallet** (Stellar)
-- **Telegram Account** (bot için)
+- **Telegram Account** (for bot)
 
-### **🔧 Frontend Kurulumu**
+### **🔧 Frontend Setup**
 
 ```bash
-# 1. Repository'yi klonlayın
+# 1. Clone the repository
 git clone https://github.com/your-username/blend-sentinel.git
 cd blend-sentinel/blend-ui
 
-# 2. Dependencies'leri yükleyin
+# 2. Install dependencies
 npm install
 
-# 3. Environment dosyasını oluşturun
+# 3. Create environment file
 cp .env.testnet .env.local
 
-# 4. Bot API URL'ini ekleyin
+# 4. Add Bot API URL
 echo "NEXT_PUBLIC_BOT_API_URL=http://localhost:3002" >> .env.local
 
-# 5. Development server'ı başlatın
+# 5. Start development server
 npm run dev
 
 # ✅ Frontend: http://localhost:3000
 ```
 
-### **🤖 Backend (Telegram Bot) Kurulumu**
+### **🤖 Backend (Telegram Bot) Setup**
 
 ```bash
-# 1. Bot dizinine gidin
+# 1. Go to bot directory
 cd ../telegram-bot
 
-# 2. Dependencies'leri yükleyin  
+# 2. Install dependencies  
 npm install
 
-# 3. Environment dosyasını oluşturun
+# 3. Create environment file
 cat > .env << EOF
 TELEGRAM_BOT_TOKEN=
 PORT=3002
 FRONTEND_URL=http://localhost:3000
 EOF
 
-# 4. Demo modunda çalıştırın (token olmadan)
+# 4. Run in demo mode (without token)
 npm start
 
 # ✅ Bot API: http://localhost:3002
@@ -234,41 +234,41 @@ npm start
 
 ---
 
-## 🤖 **Telegram Bot Kurulumu**
+## 🤖 **Telegram Bot Setup**
 
-### **📱 Bot Oluşturma**
+### **📱 Creating a Bot**
 
-1. **@BotFather**'a mesaj gönderin: https://t.me/BotFather
-2. `/newbot` komutunu yazın
-3. Bot için isim seçin: `Blend Sentinel Risk Monitor`
-4. Username seçin: `blend_sentinel_bot` (benzeri)
-5. **Token'ı kopyalayın**: `1234567890:ABC-DEF1234ghIkl...`
+1. Send message to **@BotFather**: https://t.me/BotFather
+2. Type `/newbot` command
+3. Choose bot name: `Blend Sentinel Risk Monitor`
+4. Choose username: `blend_sentinel_bot` (or similar)
+5. **Copy the token**: `1234567890:ABC-DEF1234ghIkl...`
 
-### **🔑 Token Konfigürasyonu**
+### **🔑 Token Configuration**
 
 ```bash
-# .env dosyasını düzenleyin
+# Edit .env file
 nano telegram-bot/.env
 
-# Token'ı ekleyin:
+# Add token:
 TELEGRAM_BOT_TOKEN=1234567890:ABC-DEF1234ghIkl-zyx57W2v1u123ew11
 ```
 
-### **🆔 Chat ID Öğrenme**
+### **🆔 Getting Chat ID**
 
 ```bash
-# Chat ID script'ini çalıştırın
+# Run chat ID script
 cd telegram-bot
 node get-chat-id.js
 
-# Telegram'da botunuza mesaj gönderin
-# Chat ID konsola yazdırılacak: 123456789
+# Send message to your bot on Telegram
+# Chat ID will be printed to console: 123456789
 ```
 
-### **📋 Subscription Oluşturma**
+### **📋 Creating Subscription**
 
 ```bash
-# Subscription oluşturun
+# Create subscription
 curl -X POST http://localhost:3002/api/subscribe \
   -H "Content-Type: application/json" \
   -d '{
@@ -278,10 +278,10 @@ curl -X POST http://localhost:3002/api/subscribe \
   }'
 ```
 
-### **🧪 Notification Test**
+### **🧪 Testing Notification**
 
 ```bash
-# Test notification gönderin
+# Send test notification
 curl -X POST http://localhost:3002/api/notify \
   -H "Content-Type: application/json" \
   -d '{
@@ -294,53 +294,53 @@ curl -X POST http://localhost:3002/api/notify \
 
 ---
 
-## 📱 **Kullanım**
+## 📱 **Usage**
 
-### **🔗 1. Wallet Bağlantısı**
+### **🔗 1. Wallet Connection**
 
-1. **http://localhost:3000/sentinel** adresine gidin
-2. **Freighter wallet**'ınızı browser'da aktif edin
-3. **"Connect Wallet"** butonuna tıklayın
-4. **İzinleri onaylayın**
+1. Go to **http://localhost:3000/sentinel**
+2. Activate your **Freighter wallet** in browser
+3. Click **"Connect Wallet"** button
+4. **Approve permissions**
 
-### **📊 2. Dashboard İncelemesi**
+### **📊 2. Dashboard Overview**
 
-- **Overall Health Factor** - Genel pozisyon sağlığı
-- **Active Positions** - Pool bazında pozisyon detayları  
-- **Risk Scores** - Her pozisyon için risk analizi
-- **Notification Status** - Son uyarı durumu
+- **Overall Health Factor** - General position health
+- **Active Positions** - Pool-based position details  
+- **Risk Scores** - Risk analysis for each position
+- **Notification Status** - Last alert status
 
 ### **⚠️ 3. Risk Monitoring**
 
-Sistem otomatik olarak:
-- ✅ **Her 30 saniyede** pozisyonları kontrol eder
-- ✅ **Risk skoru 80+** olduğunda Telegram'a bildirim gönderir
-- ✅ **Health Factor < 1.2** durumunda acil uyarı verir
-- ✅ **Position değişikliklerini** real-time takip eder
+System automatically:
+- ✅ **Checks positions every 30 seconds**
+- ✅ **Sends Telegram notification when risk score 80+**
+- ✅ **Sends emergency alert when Health Factor < 1.2**
+- ✅ **Tracks position changes in real-time**
 
-### **📱 4. Telegram Bildirimleri**
+### **📱 4. Telegram Notifications**
 
-Yüksek risk durumunda aldığınız mesaj:
+Message you receive in high risk situations:
 
 ```
-🚨 BLEND SENTINEL UYARI
+🚨 BLEND SENTINEL ALERT
 
-🚨 YÜKSEK RİSK UYARISI! 1 pozisyonunuz risk skoru 80+ seviyesinde.
+🚨 HIGH RISK WARNING! 1 of your positions has risk score 80+ level.
 
-📊 Yüksek Riskli Pozisyonlar:
+📊 High Risk Positions:
 1. USDC Pool
-   💰 Teminat: $100,000
-   💸 Borç: $85,000  
-   📈 Risk Skoru: 85/100
+   💰 Collateral: $100,000
+   💸 Debt: $85,000  
+   📈 Risk Score: 85/100
    🏥 Health Factor: 1.18
 
-🔗 Pozisyonlarınızı kontrol edin:
+🔗 Check your positions:
 http://localhost:3000/sentinel
 ```
 
 ---
 
-## 🔌 **API Referansı**
+## 🔌 **API Reference**
 
 ### **🏥 Health Check**
 
@@ -465,26 +465,26 @@ CMD ["node", "server.js"]
 ### **🚀 Vercel Frontend Deployment**
 
 ```bash
-# Vercel CLI ile deploy
+# Deploy with Vercel CLI
 cd blend-ui
 npm install -g vercel
 vercel --prod
 
-# Environment variables ekleyin:
+# Add environment variables:
 # NEXT_PUBLIC_BOT_API_URL=https://your-bot-api.com
 ```
 
 ### **☁️ VPS Bot Deployment**
 
 ```bash
-# VPS'e bot deploy
+# Deploy bot to VPS
 scp -r telegram-bot/ user@your-server:/opt/blend-sentinel/
 ssh user@your-server
 
 cd /opt/blend-sentinel/telegram-bot
 npm install --production
 
-# PM2 ile production deployment
+# Production deployment with PM2
 npm install -g pm2
 pm2 start server.js --name "blend-sentinel-bot"
 pm2 startup
@@ -574,11 +574,11 @@ git push origin feature/amazing-feature
 
 ### **🐛 Bug Reports**
 
-Bug report için [GitHub Issues](https://github.com/your-username/blend-sentinel/issues) kullanın:
+Use [GitHub Issues](https://github.com/your-username/blend-sentinel/issues) for bug reports:
 
 ```markdown
 **Bug Description:**
-Kısa açıklama
+Brief description
 
 **Steps to Reproduce:**
 1. Go to '...'
@@ -586,10 +586,10 @@ Kısa açıklama
 3. See error
 
 **Expected Behavior:**
-Ne olması gerekiyordu
+What should have happened
 
 **Screenshots:**
-Varsa ekran görüntüleri
+If available
 
 **Environment:**
 - OS: [e.g. macOS]
@@ -601,7 +601,7 @@ Varsa ekran görüntüleri
 
 ## 📄 **License**
 
-Bu proje **MIT License** altında lisanslanmıştır. Detaylar için [LICENSE](LICENSE) dosyasına bakın.
+This project is licensed under **MIT License**. See [LICENSE](LICENSE) file for details.
 
 ```
 MIT License
@@ -631,18 +631,18 @@ SOFTWARE.
 
 ## ⚠️ **Disclaimer**
 
-Bu araç yalnızca **bilgilendirme amaçlıdır** ve **finansal tavsiye değildir**. DeFi protokollerinde her zaman risk vardır:
+This tool is for **informational purposes only** and is **not financial advice**. There are always risks in DeFi protocols:
 
-- 💸 **Akıllı kontrat riskleri** 
-- 📉 **Piyasa volatilitesi**
+- 💸 **Smart contract risks** 
+- 📉 **Market volatility**
 - 🔧 **Technical failures**
-- ⚡ **Slippage ve MEV**
+- ⚡ **Slippage and MEV**
 
-**Lütfen kendi araştırmanızı yapın** ve yalnızca kaybetmeyi göze alabileceğiniz fonları kullanın.
+**Please do your own research** and only use funds you can afford to lose.
 
 ---
 
-## 📞 **İletişim & Destek**
+## 📞 **Contact & Support**
 
 - 🌐 **Website**: [blend-sentinel.com](https://blend-sentinel.com)
 - 📱 **Telegram**: [@blend_sentinel_bot](https://t.me/blend_sentinel_bot)
@@ -652,7 +652,7 @@ Bu araç yalnızca **bilgilendirme amaçlıdır** ve **finansal tavsiye değildi
 
 ---
 
-## 🙏 **Teşekkürler**
+## 🙏 **Acknowledgments**
 
 - **[Blend Capital](https://blend.capital/)** - Amazing DeFi protocol on Stellar
 - **[Stellar Development Foundation](https://stellar.org/)** - Blockchain infrastructure  
@@ -664,11 +664,11 @@ Bu araç yalnızca **bilgilendirme amaçlıdır** ve **finansal tavsiye değildi
 
 <div align="center">
 
-**🛡️ Blend Sentinel - Stellar ağında DeFi güvenliğiniz için akıllı risk yönetimi**
+**🛡️ Blend Sentinel - Smart risk management for DeFi security on Stellar network**
 
 [![Follow on Twitter](https://img.shields.io/twitter/follow/BlendSentinel?style=social)](https://twitter.com/BlendSentinel)
 [![Star on GitHub](https://img.shields.io/github/stars/your-username/blend-sentinel?style=social)](https://github.com/your-username/blend-sentinel)
 
-**⭐ Bu projeyi beğendiyseniz star vermeyi unutmayın!**
+**⭐ Don't forget to star this project if you like it!**
 
 </div> 

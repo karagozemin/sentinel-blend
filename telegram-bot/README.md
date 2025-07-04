@@ -1,8 +1,8 @@
 # Blend Sentinel Telegram Bot
 
-Blend protocol pozisyonları için risk uyarıları gönderen Telegram bot API'si.
+Telegram bot API that sends risk alerts for Blend protocol positions.
 
-## Kurulum
+## Installation
 
 ```bash
 npm install
@@ -10,7 +10,7 @@ npm install
 
 ## Environment Variables
 
-Proje root'unda `.env` dosyası oluşturun:
+Create `.env` file in project root:
 
 ```env
 # Telegram Bot Configuration
@@ -23,9 +23,9 @@ FRONTEND_URL=http://localhost:3000
 
 ## Demo Mode
 
-`TELEGRAM_BOT_TOKEN` değişkenini boş bırakırsanız bot demo modunda çalışır ve bildirimleri konsola yazdırır.
+If you leave `TELEGRAM_BOT_TOKEN` variable empty, bot runs in demo mode and prints notifications to console.
 
-## Çalıştırma
+## Running
 
 ```bash
 # Development
@@ -68,16 +68,16 @@ GET /api/subscription/:walletAddress
 GET /health
 ```
 
-## Telegram Bot Kurulumu
+## Telegram Bot Setup
 
-1. BotFather ile yeni bot oluşturun: https://t.me/BotFather
-2. `/newbot` komutu ile bot adını ve username'ini belirleyin
-3. Aldığınız token'ı `.env` dosyasındaki `TELEGRAM_BOT_TOKEN` değişkenine ekleyin
-4. Chat ID'nizi öğrenmek için botunuza mesaj gönderin ve webhook'u kullanın
+1. Create new bot with BotFather: https://t.me/BotFather
+2. Use `/newbot` command to set bot name and username
+3. Add the received token to `TELEGRAM_BOT_TOKEN` variable in `.env` file
+4. To learn your Chat ID, send message to your bot and use webhook
 
-## Güvenlik
+## Security
 
-- Production'da bot token'ınızı güvenli tutun
-- Rate limiting ekleyin
-- Webhook'lar için HTTPS kullanın
-- Database kullanarak subscription'ları persist edin 
+- Keep your bot token secure in production
+- Add rate limiting
+- Use HTTPS for webhooks
+- Persist subscriptions using database 

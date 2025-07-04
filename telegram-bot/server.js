@@ -116,20 +116,20 @@ app.post('/api/notify', async (req, res) => {
   // Real Telegram bot sending
   try {
     const formatMessage = (msg, positions) => {
-      let formattedMsg = `🚨 *BLEND SENTINEL UYARI*\n\n${msg}\n\n`;
+      let formattedMsg = `🚨 *BLEND SENTINEL ALERT*\n\n${msg}\n\n`;
       
       if (positions && positions.length > 0) {
-        formattedMsg += `📊 *Yüksek Riskli Pozisyonlar:*\n`;
+        formattedMsg += `📊 *High Risk Positions:*\n`;
         positions.forEach((pos, index) => {
           formattedMsg += `${index + 1}. ${pos.poolName}\n`;
-          formattedMsg += `   💰 Teminat: $${pos.collateral.toLocaleString()}\n`;
-          formattedMsg += `   💸 Borç: $${pos.debt.toLocaleString()}\n`;
-          formattedMsg += `   📈 Risk Skoru: ${pos.riskScore.toFixed(0)}/100\n`;
+          formattedMsg += `   💰 Collateral: $${pos.collateral.toLocaleString()}\n`;
+          formattedMsg += `   💸 Debt: $${pos.debt.toLocaleString()}\n`;
+          formattedMsg += `   📈 Risk Score: ${pos.riskScore.toFixed(0)}/100\n`;
           formattedMsg += `   🏥 Health Factor: ${pos.healthFactor > 99 ? '∞' : pos.healthFactor.toFixed(2)}\n\n`;
         });
       }
       
-      formattedMsg += `🔗 *Pozisyonlarınızı kontrol edin:*\n`;
+      formattedMsg += `🔗 *Check your positions:*\n`;
       formattedMsg += `${process.env.FRONTEND_URL || 'http://localhost:3000'}/sentinel`;
       
       return formattedMsg;
