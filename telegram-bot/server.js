@@ -155,7 +155,7 @@ if (bot) {
       await bot.sendMessage(chatId, 
         `🤖 *Welcome to Blend Sentinel Bot!*\n\n` +
         `This bot monitors your DeFi positions on Blend Protocol and sends you risk alerts.\n\n` +
-        `🔗 To connect your wallet, please visit:\https://sentinel-blend.vercel.app/sentinel/` +
+        `🔗 To connect your wallet, please visit:\n` +
         `${process.env.FRONTEND_URL || 'http://localhost:3000'}/sentinel\n\n` +
         `Click "Connect to Telegram" and follow the instructions.`,
         { parse_mode: 'Markdown' }

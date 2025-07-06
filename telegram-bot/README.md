@@ -1,39 +1,33 @@
 # Blend Sentinel Telegram Bot
 
-Telegram bot API that sends risk alerts for Blend protocol positions.
+Node.js server that sends risk alerts for Blend Protocol positions.
 
-## Installation
+## Setup
 
 ```bash
 npm install
-```
-
-## Environment Variables
-
-Create `.env` file in project root:
-
-```env
-# Telegram Bot Configuration
-TELEGRAM_BOT_TOKEN=YOUR_BOT_TOKEN_HERE
-PORT=3001
-
-# Frontend URL for notifications  
-FRONTEND_URL=http://localhost:3000
-```
-
-## Demo Mode
-
-If you leave `TELEGRAM_BOT_TOKEN` variable empty, bot runs in demo mode and prints notifications to console.
-
-## Running
-
-```bash
-# Development
-npm run dev
-
-# Production
 npm start
 ```
+
+Server runs on [http://localhost:3002](http://localhost:3002)
+
+## Configuration
+
+Create `.env` file:
+
+```env
+TELEGRAM_BOT_TOKEN=your_bot_token
+PORT=3002
+FRONTEND_URL=https://sentinel-blend.vercel.app
+```
+
+## Features
+
+- Real-time risk notifications
+- Rate limiting (10 min cooldown)
+- Duplicate message detection
+- Demo mode support
+- Subscription management
 
 ## API Endpoints
 
