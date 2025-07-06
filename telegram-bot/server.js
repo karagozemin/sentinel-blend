@@ -155,7 +155,7 @@ if (bot) {
       await bot.sendMessage(chatId, 
         `🤖 *Welcome to Blend Sentinel Bot!*\n\n` +
         `This bot monitors your DeFi positions on Blend Protocol and sends you risk alerts.\n\n` +
-        `🔗 To connect your wallet, please visit:\n` +
+        `🔗 To connect your wallet, please visit:\https://sentinel-blend.vercel.app/sentinel/` +
         `${process.env.FRONTEND_URL || 'http://localhost:3000'}/sentinel\n\n` +
         `Click "Connect to Telegram" and follow the instructions.`,
         { parse_mode: 'Markdown' }
@@ -329,8 +329,8 @@ app.post('/api/notify', async (req, res) => {
     });
   }
 
-  // Rate limiting: Check if last notification was sent within cooldown period (5 minutes)
-  const COOLDOWN_MINUTES = 5;
+  // Enhanced rate limiting: Check if last notification was sent within cooldown period (10 minutes)
+  const COOLDOWN_MINUTES = 10; // Increased from 5 to 10 minutes
   const now = new Date();
   const lastNotificationTime = subscription.lastNotification ? new Date(subscription.lastNotification) : null;
   
@@ -348,18 +348,26 @@ app.post('/api/notify', async (req, res) => {
     }
   }
 
-  // Message deduplication: Check if same message was sent recently
+  // Enhanced message deduplication: Check if same message was sent recently (24 hours)
+  const DEDUP_HOURS = 24; // 24 hours deduplication window
   const recentNotifications = notifications
-    .filter(n => n.walletAddress === walletAddress && n.status === 'sent')
+    .filter(n => {
+      const notificationTime = new Date(n.timestamp);
+      const hoursDiff = (now.getTime() - notificationTime.getTime()) / (1000 * 60 * 60); // hours
+      return n.walletAddress === walletAddress && 
+             (n.status === 'sent' || n.status === 'sent_demo') && 
+             hoursDiff < DEDUP_HOURS;
+    })
     .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
-    .slice(0, 3); // Check last 3 notifications
+    .slice(0, 10); // Check last 10 notifications within 24 hours
 
   const isDuplicate = recentNotifications.some(n => n.message === message);
   if (isDuplicate) {
     console.log(`🔄 [DUPLICATE] Same message already sent recently for ${walletAddress}`);
     return res.status(409).json({ 
-      error: 'Duplicate notification detected. Same message was sent recently.',
-      isDuplicate: true
+      error: 'Duplicate notification detected. Same message was sent within the last 24 hours.',
+      isDuplicate: true,
+      lastSentTime: recentNotifications.find(n => n.message === message)?.timestamp
     });
   }
 
