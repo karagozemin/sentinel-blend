@@ -329,6 +329,40 @@ app.post('/api/notify', async (req, res) => {
     });
   }
 
+  // Rate limiting: Check if last notification was sent within cooldown period (5 minutes)
+  const COOLDOWN_MINUTES = 5;
+  const now = new Date();
+  const lastNotificationTime = subscription.lastNotification ? new Date(subscription.lastNotification) : null;
+  
+  if (lastNotificationTime) {
+    const timeDiff = (now.getTime() - lastNotificationTime.getTime()) / (1000 * 60); // minutes
+    if (timeDiff < COOLDOWN_MINUTES) {
+      const remainingTime = Math.ceil(COOLDOWN_MINUTES - timeDiff);
+      console.log(`⏱️ [RATE LIMIT] Notification blocked for ${walletAddress}. Cooldown remaining: ${remainingTime} minutes`);
+      
+      return res.status(429).json({ 
+        error: `Rate limit exceeded. Please wait ${remainingTime} minutes before sending another notification.`,
+        cooldownRemaining: remainingTime,
+        lastNotification: subscription.lastNotification
+      });
+    }
+  }
+
+  // Message deduplication: Check if same message was sent recently
+  const recentNotifications = notifications
+    .filter(n => n.walletAddress === walletAddress && n.status === 'sent')
+    .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+    .slice(0, 3); // Check last 3 notifications
+
+  const isDuplicate = recentNotifications.some(n => n.message === message);
+  if (isDuplicate) {
+    console.log(`🔄 [DUPLICATE] Same message already sent recently for ${walletAddress}`);
+    return res.status(409).json({ 
+      error: 'Duplicate notification detected. Same message was sent recently.',
+      isDuplicate: true
+    });
+  }
+
   const notification = {
     id: Date.now().toString(),
     walletAddress,
@@ -412,6 +446,23 @@ app.post('/api/notify', async (req, res) => {
 
   } catch (error) {
     console.error('❌ Telegram send error:', error);
+    
+    // Handle Telegram rate limiting (429 errors)
+    if (error.response && error.response.body && error.response.body.error_code === 429) {
+      const retryAfter = error.response.body.parameters?.retry_after || 60;
+      console.log(`🚫 [TELEGRAM RATE LIMIT] Retry after ${retryAfter} seconds`);
+      
+      notification.status = 'rate_limited';
+      notification.error = `Telegram rate limit: retry after ${retryAfter} seconds`;
+      notification.retryAfter = retryAfter;
+      notifications.push(notification);
+      
+      return res.status(429).json({ 
+        error: 'Telegram rate limit exceeded',
+        retryAfter: retryAfter,
+        details: 'Too many requests to Telegram API. Please try again later.'
+      });
+    }
     
     notification.status = 'failed';
     notification.error = error.message;
